@@ -1,0 +1,42 @@
+- **Exercício 1 — Escalonamento Circular**
+
+No experimento, após três minutos de execução, o processo CPU-bound acumulou 90 tempos de CPU, enquanto o processo I/O-bound acumulou 16 tempos de CPU. Isso ocorre porque o processo CPU-bound permanece frequentemente no estado de execução, utilizando a UCP continuamente, enquanto o processo I/O-bound passa uma parte significativa do tempo bloqueado, aguardando a conclusão de operações de E/S.
+
+Se o quantum aumentar, cada processo poderá permanecer por mais tempo utilizando a UCP antes de ser retirado pelo escalonador. Com isso, haverá uma redução na frequência das trocas de contexto, aumentando o tempo de execução contínua de cada processo.
+
+Se o quantum diminuir, os processos serão alternados com maior frequência, aumentando a quantidade de trocas de contexto. Isso permite uma alternância mais rápida entre os processos, porém aumenta o overhead causado pelas trocas de contexto.
+
+É importante destacar que o aumento ou a diminuição do quantum não significa necessariamente que os processos passarão a ter a mesma quantidade de tempo de CPU acumulado, pois o processo I/O-bound pode ficar bloqueado aguardando operações de E/S, enquanto o CPU-bound tende a permanecer executando.
+
+- **Exercício 2 — Escalonamento Circular Com Prioridades**
+
+Após três minutos de execução, o processo CPU-bound, com prioridade 3, acumulou tempos de CPU, enquanto o processo I/O-bound, com prioridade 4, acumulou 16 tempos de CPU.
+
+Os resultados foram os mesmos observados no Exercício 1. Isso ocorre porque, apesar de o processo I/O-bound possuir maior prioridade, ele passa uma parte significativa do tempo bloqueado aguardando operações de E/S. Enquanto está bloqueado, ele não pode utilizar a UCP, independentemente de sua prioridade. Dessa forma, o CPU-bound continua utilizando a UCP durante os períodos em que o I/O-bound está bloqueado.
+
+Comparando com o Exercício 1, a alteração do algoritmo para o escalonamento com prioridades não produziu uma diferença nos tempos acumulados de CPU neste experimento, permanecendo em 90 tempos de CPU para o CPU-bound e 16 tempos de CPU para o I/O-bound.
+
+Quanto ao tempo de espera do processo I/O-bound, se esse tempo aumentar, o processo permanecerá mais tempo bloqueado aguardando E/S e, consequentemente, terá menos oportunidades de utilizar a UCP, deixando-a livre para o processo CPU-bound utiliza-la por mais tempos. Se o tempo de espera diminuir, o processo retornará mais rapidamente à fila de processos prontos, podendo utilizar a UCP com maior frequência, restrigindo os tempos de CPU do processo CPU-bound.
+
+- **Exercício 3 — Escalonamento Circular Com Prioridades**
+
+Neste experimento, o processo CPU-bound recebeu prioridade 4, enquanto o processo I/O-bound recebeu prioridade 3. Como o processo CPU-bound possui maior prioridade e permanece continuamente apto a utilizar a UCP, ele teve preferência no escalonamento. Como consequência, o processo I/O-bound permaneceu 100% do tempo esperando, não conseguindo utilizar a UCP enquanto o processo de maior prioridade estava pronto para executar.
+
+Esse resultado demonstra que a definição das prioridades tem grande influência na distribuição da UCP. Uma prioridade muito alta para um processo CPU-bound pode fazer com que processos de menor prioridade permaneçam esperando por longos períodos, podendo ocorrer até inanição (starvation) desses processos.
+
+Os critérios para determinar as prioridades dos processos devem considerar, entre outros fatores:
+
+- Importância do processo para o sistema;
+- Urgência de sua execução;
+- Tempo de resposta necessário;
+- Tipo de processo, como CPU-bound ou I/O-bound;
+- Interatividade, dando maior prioridade a processos que precisam responder rapidamente ao usuário;
+- Tempo que o processo já está esperando, evitando que processos de baixa prioridade permaneçam indefinidamente sem utilizar a UCP.
+
+- **Exercício 4 — Escalonamento circular com prioridades (prioridade dinâmica – mecanismo adaptivo)**
+
+Neste experimento, os dois processos foram inicialmente configurados com a mesma prioridade, 3. Entretanto, ao retornar do estado de espera de E/S para a fila de processos prontos, o processo I/O-bound teve sua prioridade aumentada temporariamente para 4. Dessa forma, ele passou a ter preferência na utilização da UCP em relação ao processo CPU-bound.
+
+Comparando com o Exercício 2, o comportamento é semelhante, pois naquele exercício o processo I/O-bound já possuía prioridade 4 desde o início. A diferença é que, no Exercício 4, essa prioridade é atribuída dinamicamente, de acordo com o comportamento do processo.
+
+A principal vantagem desse mecanismo para processos I/O-bound é proporcionar maior prioridade aos processos que retornam de operações de E/S, permitindo que eles utilizem a UCP rapidamente e concluam suas atividades. Isso melhora o tempo de resposta desses processos e evita que processos CPU-bound, que permanecem continuamente prontos, monopolizem a UCP.
