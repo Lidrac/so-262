@@ -192,19 +192,23 @@ def run_demo():
     
     # 1. Exibir estado inicial
     banker.display_state()
+    print("NOME: PEDRO HENRIQUE MAURICIO ALVES")
     
     # 2. Testar se o estado inicial é seguro
     is_safe, sequence = banker.is_safe_state(verbose=True)
+    print("NOME: PEDRO HENRIQUE MAURICIO ALVES")
     
     # 3. Teste de Caso 1: Requisição VÁLIDA e SEGURA feita pelo processo P1
     # P1 solicita [1, 0, 2]
     banker.request_resources(process_index=1, request_vector=[1, 0, 2])
     banker.display_state()
+    print("NOME: PEDRO HENRIQUE MAURICIO ALVES")
 
     # 4. Teste de Caso 2: Requisição INSEGURA feita pelo processo P4
     # P4 solicita [3, 3, 0] (Excede disponível ou gera estado inseguro)
     banker.request_resources(process_index=4, request_vector=[3, 3, 0])
     banker.display_state()
+    print("NOME: PEDRO HENRIQUE MAURICIO ALVES")
 
 if __name__ == "__main__":
     run_demo()
